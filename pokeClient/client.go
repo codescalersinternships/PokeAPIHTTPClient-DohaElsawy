@@ -1,4 +1,4 @@
-package client
+package pokeclient
 
 import (
 	"net/http"
@@ -11,16 +11,15 @@ import (
 
 // Client represent a http client
 type Client struct {
-	Client *http.Client
-	Endpoint    string
+	Client   *http.Client
+	Endpoint string
 }
 
 // Generic http client for default values
 var (
-	TimeoutDefault  = 2 * time.Second
-	UrlDefault      = "https://pokeapi.co/api/v2"
+	TimeoutDefault = 2 * time.Second
+	UrlDefault     = "https://pokeapi.co/api/v2"
 )
-
 
 // LoadConfigFromENV load endpoint from env file and return error if exist
 func (c *Client) LoadConfigFromENV(path string) error {
@@ -33,7 +32,7 @@ func (c *Client) LoadConfigFromENV(path string) error {
 	}
 
 	endpoint := os.Getenv("ENDPOINT")
-	
+
 	tempCLient := NewClient(endpoint)
 
 	c.Client = tempCLient.Client
@@ -44,14 +43,14 @@ func (c *Client) LoadConfigFromENV(path string) error {
 	return nil
 }
 
-// NewClient initalize new http client and take endpoint 
+// NewClient initalize new http client and take endpoint
 func NewClient(endpoint string) *Client {
 
 	client := &Client{
 		Client: &http.Client{
 			Timeout: TimeoutDefault,
 		},
-		Endpoint: UrlDefault+endpoint,
+		Endpoint: UrlDefault + endpoint,
 	}
 
 	logrus.Printf("new client created %v\n", client)
