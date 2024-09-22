@@ -1,6 +1,7 @@
 package pokeclient
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -39,16 +40,30 @@ func LoadConfigFromENV(path string) (string, error) {
 }
 
 // NewClient initalize new http client and take endpoint
-func NewClient(endpoint string) *Client {
+func NewClient(endpoint string, params ...int) *Client {
 
+	offset, limit := parseParams(params)
 	client := &Client{
 		Client: &http.Client{
 			Timeout: TimeoutDefault,
 		},
-		Url: UrlDefault + endpoint,
+		Url: fmt.Sprintf("%s%s?offset=%d&limit=%d",UrlDefault ,endpoint, offset, limit),
 	}
 
 	logrus.Printf("new client created %v\n", client)
 
 	return client
+}
+
+
+func parseParams(params []int) ( int,  int) {
+	size := len(params)
+
+	if size == 2 {
+		return params[0] , params[1]
+	}
+	if size == 1 {
+		return params[0] , params[1]
+	}
+	return 0 , 0
 }
