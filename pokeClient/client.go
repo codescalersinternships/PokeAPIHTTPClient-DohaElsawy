@@ -12,7 +12,7 @@ import (
 // Client represent a http client
 type Client struct {
 	Client   *http.Client
-	Endpoint string
+	Url string
 }
 
 // Generic http client for default values
@@ -36,7 +36,7 @@ func (c *Client) LoadConfigFromENV(path string) error {
 	tempCLient := NewClient(endpoint)
 
 	c.Client = tempCLient.Client
-	c.Endpoint = tempCLient.Endpoint
+	c.Url = tempCLient.Url
 
 	logrus.Println("create client with load env file")
 
@@ -50,7 +50,7 @@ func NewClient(endpoint string) *Client {
 		Client: &http.Client{
 			Timeout: TimeoutDefault,
 		},
-		Endpoint: UrlDefault + endpoint,
+		Url: UrlDefault + endpoint,
 	}
 
 	logrus.Printf("new client created %v\n", client)
