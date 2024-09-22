@@ -44,7 +44,7 @@ func (c *Client) LoadConfigFromENV(path string) error {
 	return nil
 }
 
-// NewClient initalize new http client and take option url string
+// NewClient initalize new http client and take endpoint 
 func NewClient(endpoint string) *Client {
 
 	client := &Client{
