@@ -22,25 +22,20 @@ var (
 )
 
 // LoadConfigFromENV load endpoint from env file and return error if exist
-func (c *Client) LoadConfigFromENV(path string) error {
+func LoadConfigFromENV(path string) (string, error) {
 
 	err := godotenv.Load(path)
 
 	if err != nil {
 		logrus.Errorf("error while loading .env file. Err: %s", err)
-		return err
+		return "", err
 	}
 
 	endpoint := os.Getenv("ENDPOINT")
 
-	tempCLient := NewClient(endpoint)
-
-	c.Client = tempCLient.Client
-	c.Url = tempCLient.Url
-
 	logrus.Println("create client with load env file")
 
-	return nil
+	return endpoint , nil
 }
 
 // NewClient initalize new http client and take endpoint
