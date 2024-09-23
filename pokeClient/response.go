@@ -3,7 +3,6 @@ package pokeclient
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"strings"
 	"time"
@@ -46,7 +45,6 @@ func (c *Client) GetResponse(responseType interface{}) error {
 		return AssignErrorResponse(err, req.Response.StatusCode)
 	}
 
-	req.Header.Add("Accept", "text/plain")
 	req.Header.Add("Accept", "application/json")
 
 	operation := func() (*http.Response, error) {
@@ -77,31 +75,19 @@ func (c *Client) GetResponse(responseType interface{}) error {
 
 	header := res.Header.Get("Content-Type")
 
-	if !strings.Contains(header, "text/plain") && !strings.Contains(header, "application/json") {
+	if !strings.Contains(header, "application/json") {
 		logrus.Errorf("unsupported header type, status code is  %d", res.StatusCode)
 		return AssignErrorResponse(err, res.StatusCode)
 	}
 
-	body, err := io.ReadAll(res.Body)
+	decoder := json.NewDecoder(res.Body)
+
+	err = decoder.Decode(&responseType)
 
 	if err != nil {
-		logrus.Errorf("can't read response body. Err = %s", err)
+		logrus.Errorf("unable to unmarchal body to json. Err = %s", err)
 		return AssignErrorResponse(err, res.StatusCode)
 	}
-
-	if strings.Contains(header, "application/json") {
-
-		err = json.Unmarshal(body, &responseType)
-
-		if err != nil {
-			logrus.Errorf("unable to unmarchal body to json. Err = %s", err)
-			return AssignErrorResponse(err, res.StatusCode)
-		}
-
-		return nil
-	}
-
-	responseType = string(body)
 
 	return nil
 }
