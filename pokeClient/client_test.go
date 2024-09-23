@@ -45,7 +45,7 @@ func TestClient(t *testing.T) {
 	for _, test := range testcase {
 		t.Run("load endpoint from .env and initiate valid client", func(t *testing.T) {
 
-			endpoint, err := LoadConfigFromENV("../.env")
+			endpoint, err := LoadConfigFromENV("../testdata/.env")
 
 			if err != nil {
 				t.Errorf("the error is %v", err)
