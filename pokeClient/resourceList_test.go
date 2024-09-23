@@ -72,4 +72,21 @@ func TestResource(t *testing.T) {
 			assertNotEqual(t, 0, resource.Count)
 		})
 	}
+
+
+	t.Run("valid list resource load from .env", func(t *testing.T) {
+
+		endpoint , params , err := LoadConfigFromENV("../testdata/.env")
+		
+		assertIsEqual(t,nil,err)
+
+		resource, err := GetResource(endpoint, params[0], params[1])
+
+		assertIsEqual(t,params[1] , len(resource.Results))
+		assertIsEqual(t,"charmeleon" , resource.Results[0].Name)
+		assertIsEqual(t, nil, err)
+
+		assertNotEqual(t, 0, resource.Count)
+	})
+
 }

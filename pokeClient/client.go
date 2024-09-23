@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -23,20 +24,30 @@ var (
 )
 
 // LoadConfigFromENV load endpoint from env file and return error if exist
-func LoadConfigFromENV(path string) (string, error) {
+func LoadConfigFromENV(path string) (string,[]int, error) {
 
 	err := godotenv.Load(path)
 
 	if err != nil {
 		logrus.Errorf("error while loading .env file. Err: %s", err)
-		return "", err
+		return "", nil ,err
 	}
 
 	endpoint := os.Getenv("ENDPOINT")
+	offset := os.Getenv("OFFSET")
+	limit := os.Getenv("LIMIT")
 
+	params , err := appendParams(offset,limit)
+
+	if err != nil {
+		logrus.Errorf("error while loading .env file. Err: %s", err)
+		return "", nil ,err
+	}
+
+	
 	logrus.Println("create client with load env file")
 
-	return endpoint, nil
+	return endpoint,params ,nil
 }
 
 // NewClient initalize new http client and take endpoint and offset and limit as options 
@@ -65,4 +76,26 @@ func parseParams(params []int) (int, int) {
 		return params[0], params[1]
 	}
 	return 0, 0
+}
+
+func appendParams(offset , limit string) ([]int , error){
+	var params []int
+
+	offsetInt , err := strconv.Atoi(offset)
+
+	if err != nil {
+		logrus.Errorf("error while loading .env file. Err: %s", err)
+		return nil ,err
+	}
+	limitInt , err := strconv.Atoi(limit)
+
+	if err != nil {
+		logrus.Errorf("error while loading .env file. Err: %s", err)
+		return nil, err
+	}
+
+
+	params = append(params, offsetInt)
+	params = append(params, limitInt)
+	return params , nil
 }

@@ -42,22 +42,20 @@ func TestClient(t *testing.T) {
 		})
 	}
 
-	for _, test := range testcase {
-		t.Run("load endpoint from .env and initiate valid client", func(t *testing.T) {
+	t.Run("load endpoint from .env and initiate valid client", func(t *testing.T) {
 
-			endpoint, err := LoadConfigFromENV("../testdata/.env")
+		endpoint,params,err := LoadConfigFromENV("../testdata/.env")
 
-			if err != nil {
-				t.Errorf("the error is %v", err)
-			}
-			expectURL := fmt.Sprintf("https://pokeapi.co/api/v2%s?offset=%d&limit=%d", endpoint, test.offset, test.limit)
+		if err != nil {
+			t.Errorf("the error is %v", err)
+		}
+		expectURL := fmt.Sprintf("https://pokeapi.co/api/v2%s?offset=%d&limit=%d", endpoint, params[0], params[1])
 
-			result := NewClient(endpoint, test.offset, test.limit)
+		result := NewClient(endpoint, params[0], params[1])
 
-			if !reflect.DeepEqual(expectURL, result.Url) {
-				t.Errorf("i got %v, expect %v", result.Url, expectURL)
-			}
-		})
-	}
+		if !reflect.DeepEqual(expectURL, result.Url) {
+			t.Errorf("i got %v, expect %v", result.Url, expectURL)
+		}
+	})
 
 }
