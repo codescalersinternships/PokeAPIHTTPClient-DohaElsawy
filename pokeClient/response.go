@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
@@ -45,8 +44,6 @@ func (c *Client) GetResponse(responseType interface{}) error {
 		return AssignErrorResponse(err, req.Response.StatusCode)
 	}
 
-	req.Header.Add("Accept", "application/json")
-
 	operation := func() (*http.Response, error) {
 		res, err := c.Client.Do(req)
 		return res, err
@@ -73,20 +70,13 @@ func (c *Client) GetResponse(responseType interface{}) error {
 		return AssignErrorResponse(fmt.Errorf("unsupported header format"), res.StatusCode)
 	}
 
-	header := res.Header.Get("Content-Type")
-
-	if !strings.Contains(header, "application/json") {
-		logrus.Errorf("unsupported header type, status code is  %d", res.StatusCode)
-		return AssignErrorResponse(err, res.StatusCode)
-	}
-
 	decoder := json.NewDecoder(res.Body)
 
 	err = decoder.Decode(&responseType)
 
 	if err != nil {
 		logrus.Errorf("unable to unmarchal body to json. Err = %s", err)
-		return AssignErrorResponse(err, res.StatusCode)
+		return AssignErrorResponse(err, req.Response.StatusCode)
 	}
 
 	return nil

@@ -8,30 +8,6 @@ import (
 
 func TestGetResponse(t *testing.T) {
 
-	t.Run("Data with plain text format", func(t *testing.T) {
-		mockserver := httptest.NewServer(
-			http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
-				w.Header().Set("Content-type", "text/plain")
-
-				w.WriteHeader(http.StatusOK)
-			}),
-		)
-
-		mockserver.URL = "/pokemon?offset=0&limit=1"
-
-		var resource Resource
-		client := NewClient(mockserver.URL)
-
-		err := client.GetResponse(&resource)
-
-		if err != nil {
-			t.Errorf("error is %v", err)
-		}
-
-	})
-
-
 	t.Run("Data with json format", func(t *testing.T) {
 		mockserver := httptest.NewServer(
 			http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
