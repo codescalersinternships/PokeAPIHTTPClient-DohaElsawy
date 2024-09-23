@@ -36,7 +36,6 @@ func TestResource(t *testing.T) {
 			endpoint:       "/pokemon",
 			expectName:     "metapod",
 			expectedLength: 5,
-			err:            ErrResponse{},
 		},
 		{
 			offset:         0,
@@ -44,7 +43,6 @@ func TestResource(t *testing.T) {
 			endpoint:       "/pokemon",
 			expectName:     "bulbasaur",
 			expectedLength: 20,
-			err:            ErrResponse{},
 		},
 		{
 			offset:         0,
@@ -52,7 +50,6 @@ func TestResource(t *testing.T) {
 			endpoint:       "/ability",
 			expectName:     "stench",
 			expectedLength: 366,
-			err:            ErrResponse{},
 		},
 		{
 			offset:         0,
@@ -60,7 +57,6 @@ func TestResource(t *testing.T) {
 			endpoint:       "/ability",
 			expectName:     "stench",
 			expectedLength: 366,
-			err:            ErrResponse{},
 		},
 	}
 

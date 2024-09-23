@@ -18,19 +18,16 @@ func TestPokemon(t *testing.T) {
 		id                    int
 		expectAbilityName     string
 		expectedPokemonHeight int
-		err                   ErrResponse
 	}{
 		{
 			id:                    30,
 			expectAbilityName:     "poison-point",
 			expectedPokemonHeight: 8,
-			err:                   ErrResponse{},
 		},
 		{
 			id:                    1,
 			expectAbilityName:     "overgrow",
 			expectedPokemonHeight: 7,
-			err:                   ErrResponse{},
 		},
 	}
 
