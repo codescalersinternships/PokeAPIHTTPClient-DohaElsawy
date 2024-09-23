@@ -12,12 +12,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-
 // Time takes for backoff to wait
 const (
 	ConstBackoffTime = 4 * time.Second
 )
-
 
 // ErrResponse represent error response
 type ErrResponse struct {
@@ -38,9 +36,8 @@ func AssignErrorResponse(err error, statuscode int) error {
 	}
 }
 
-
 // GetResponse retrive pokemon data and error if exist
-func (c *Client) GetResponse(responseType interface{}) (error) {
+func (c *Client) GetResponse(responseType interface{}) error {
 
 	req, err := http.NewRequest("GET", c.Url, nil)
 
@@ -67,7 +64,7 @@ func (c *Client) GetResponse(responseType interface{}) (error) {
 
 	if err != nil {
 		logrus.Errorf("from Client.Do function %s\n", err)
-		return AssignErrorResponse(err, req.Response.StatusCode)
+		return AssignErrorResponse(err, res.StatusCode)
 	}
 	defer res.Body.Close()
 
@@ -82,16 +79,15 @@ func (c *Client) GetResponse(responseType interface{}) (error) {
 
 	if !strings.Contains(header, "text/plain") && !strings.Contains(header, "application/json") {
 		logrus.Errorf("unsupported header type, status code is  %d", res.StatusCode)
-		return AssignErrorResponse(err, req.Response.StatusCode)
+		return AssignErrorResponse(err, res.StatusCode)
 	}
 
 	body, err := io.ReadAll(res.Body)
 
 	if err != nil {
 		logrus.Errorf("can't read response body. Err = %s", err)
-		return AssignErrorResponse(err, req.Response.StatusCode)
+		return AssignErrorResponse(err, res.StatusCode)
 	}
-
 
 	if strings.Contains(header, "application/json") {
 
@@ -99,13 +95,11 @@ func (c *Client) GetResponse(responseType interface{}) (error) {
 
 		if err != nil {
 			logrus.Errorf("unable to unmarchal body to json. Err = %s", err)
-			return AssignErrorResponse(err, req.Response.StatusCode)
+			return AssignErrorResponse(err, res.StatusCode)
 		}
 
 		return nil
 	}
-
-	//TODO : HAS TO HANDEL RETURNING PALIN TEXT 
 
 	responseType = string(body)
 

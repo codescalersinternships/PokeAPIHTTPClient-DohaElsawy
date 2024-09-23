@@ -11,7 +11,6 @@ type Resource struct {
 		Name string `json:"name"`
 		URL  string `json:"url"`
 	} `json:"results"`
-	PlainText string
 }
 
 func GetResource(endpoint string, params ...int) (result Resource, err error) {
