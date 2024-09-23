@@ -12,8 +12,8 @@ import (
 
 // Client represent a http client
 type Client struct {
-	Client   *http.Client
-	Url string
+	Client *http.Client
+	Url    string
 }
 
 // Generic http client for default values
@@ -36,7 +36,7 @@ func LoadConfigFromENV(path string) (string, error) {
 
 	logrus.Println("create client with load env file")
 
-	return endpoint , nil
+	return endpoint, nil
 }
 
 // NewClient initalize new http client and take endpoint
@@ -47,7 +47,7 @@ func NewClient(endpoint string, params ...int) *Client {
 		Client: &http.Client{
 			Timeout: TimeoutDefault,
 		},
-		Url: fmt.Sprintf("%s%s?offset=%d&limit=%d",UrlDefault ,endpoint, offset, limit),
+		Url: fmt.Sprintf("%s%s?offset=%d&limit=%d", UrlDefault, endpoint, offset, limit),
 	}
 
 	logrus.Printf("new client created %v\n", client)
@@ -55,15 +55,14 @@ func NewClient(endpoint string, params ...int) *Client {
 	return client
 }
 
-
-func parseParams(params []int) ( int,  int) {
+func parseParams(params []int) (int, int) {
 	size := len(params)
 
 	if size == 2 {
-		return params[0] , params[1]
+		return params[0], params[1]
 	}
 	if size == 1 {
-		return params[0] , params[1]
+		return params[0], params[1]
 	}
-	return 0 , 0
+	return 0, 0
 }

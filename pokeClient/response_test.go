@@ -18,7 +18,7 @@ func TestGetResponse(t *testing.T) {
 			}),
 		)
 
-		mockserver.URL = "/pokemon?offset=0&limit=1"
+		mockserver.URL = "/pokemon"
 
 		var resource Resource
 		client := NewClient(mockserver.URL)

@@ -21,8 +21,8 @@ type Pockemon struct {
 }
 
 func GetPokemon(id int) (result Pockemon, err error) {
-	
-	endpoint := fmt.Sprintf("/pokemon/%d",id)
+
+	endpoint := fmt.Sprintf("/pokemon/%d", id)
 
 	c := NewClient(endpoint)
 

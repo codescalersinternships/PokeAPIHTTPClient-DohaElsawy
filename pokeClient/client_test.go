@@ -37,7 +37,7 @@ func TestClient(t *testing.T) {
 			result := NewClient("/gender", test.offset, test.limit)
 
 			if !reflect.DeepEqual(expectURL, result.Url) {
-				t.Errorf("i got %v, expect %v", result.Url,expectURL)
+				t.Errorf("i got %v, expect %v", result.Url, expectURL)
 			}
 		})
 	}
@@ -50,13 +50,12 @@ func TestClient(t *testing.T) {
 			if err != nil {
 				t.Errorf("the error is %v", err)
 			}
-			expectURL := fmt.Sprintf("https://pokeapi.co/api/v2%s?offset=%d&limit=%d",endpoint, test.offset, test.limit)
-
+			expectURL := fmt.Sprintf("https://pokeapi.co/api/v2%s?offset=%d&limit=%d", endpoint, test.offset, test.limit)
 
 			result := NewClient(endpoint, test.offset, test.limit)
 
 			if !reflect.DeepEqual(expectURL, result.Url) {
-				t.Errorf("i got %v, expect %v", result.Url,expectURL)
+				t.Errorf("i got %v, expect %v", result.Url, expectURL)
 			}
 		})
 	}
