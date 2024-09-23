@@ -28,7 +28,7 @@ func TestResource(t *testing.T) {
 		endpoint       string
 		expectName     string
 		expectedLength int
-		err ErrResponse
+		err            ErrResponse
 	}{
 		{
 			offset:         10,
@@ -36,7 +36,7 @@ func TestResource(t *testing.T) {
 			endpoint:       "/pokemon",
 			expectName:     "metapod",
 			expectedLength: 5,
-			err: ErrResponse{},
+			err:            ErrResponse{},
 		},
 		{
 			offset:         0,
@@ -44,7 +44,7 @@ func TestResource(t *testing.T) {
 			endpoint:       "/pokemon",
 			expectName:     "bulbasaur",
 			expectedLength: 20,
-			err: ErrResponse{},
+			err:            ErrResponse{},
 		},
 		{
 			offset:         0,
@@ -52,7 +52,7 @@ func TestResource(t *testing.T) {
 			endpoint:       "/ability",
 			expectName:     "stench",
 			expectedLength: 366,
-			err: ErrResponse{},
+			err:            ErrResponse{},
 		},
 		{
 			offset:         0,
@@ -60,27 +60,20 @@ func TestResource(t *testing.T) {
 			endpoint:       "/ability",
 			expectName:     "stench",
 			expectedLength: 366,
-			err: ErrResponse{},
+			err:            ErrResponse{},
 		},
-		
 	}
 
 	for _, test := range testcase {
-		t.Run("valid pokemon list resource", func(t *testing.T) {
+		t.Run("valid list resource", func(t *testing.T) {
 
-			var recource Resource
+			resource, err := GetResource(test.endpoint, test.offset, test.limit)
 
-			c := NewClient(test.endpoint, test.offset, test.limit)
-
-			err := c.GetResponse(&recource)
-
-			assertIsEqual(t, test.expectedLength, len(recource.Results))
-			assertIsEqual(t, recource.Results[0].Name, test.expectName)
+			assertIsEqual(t, test.expectedLength, len(resource.Results))
+			assertIsEqual(t, test.expectName, resource.Results[0].Name)
 			assertIsEqual(t, nil, err)
 
-			assertNotEqual(t, 0, recource.Count)
+			assertNotEqual(t, 0, resource.Count)
 		})
 	}
 }
-
-
