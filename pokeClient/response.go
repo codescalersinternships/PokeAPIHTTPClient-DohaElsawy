@@ -34,7 +34,7 @@ func AssignErrorResponse(err error, statuscode int) error {
 	}
 }
 
-// GetResponse retrive pokemon data and error if exist
+// GetResponse retrive data and error if exist
 func (c *Client) GetResponse(responseType interface{}) error {
 
 	req, err := http.NewRequest("GET", c.Url, nil)

@@ -1,7 +1,13 @@
 package pokeclient
 
-import "fmt"
+import (
+	"fmt"
 
+	"github.com/sirupsen/logrus"
+)
+
+
+// Pockemon represent pokemon structure
 type Pockemon struct {
 	ID             int    `json:"id"`
 	Name           string `json:"name"`
@@ -20,6 +26,8 @@ type Pockemon struct {
 	} `json:"abilities"`
 }
 
+
+// GetPokemon returns pokemon object and error if exist and takes pokemon id 
 func GetPokemon(id int) (result Pockemon, err error) {
 
 	endpoint := fmt.Sprintf("/pokemon/%d", id)
@@ -29,7 +37,13 @@ func GetPokemon(id int) (result Pockemon, err error) {
 	err = c.GetResponse(&result)
 
 	if err != nil {
+
+		logrus.Printf("error in getting pokemon, error %v\n", err)
+
 		return Pockemon{}, err
 	}
+
+	logrus.Printf("successfully getting pokemon")
+
 	return result, nil
 }

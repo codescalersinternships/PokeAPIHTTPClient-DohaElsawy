@@ -39,7 +39,7 @@ func LoadConfigFromENV(path string) (string, error) {
 	return endpoint, nil
 }
 
-// NewClient initalize new http client and take endpoint
+// NewClient initalize new http client and take endpoint and offset and limit as options 
 func NewClient(endpoint string, params ...int) *Client {
 
 	offset, limit := parseParams(params)
