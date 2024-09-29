@@ -45,5 +45,5 @@ Create an HTTP client in Go that consumes the Poke APIs. https://pokeapi.co/docs
 ### Format
 - format all files inside project
 ```golang
-  make test
+  make format
 ```
